@@ -8,6 +8,12 @@ const Container = tw.div`
   pl-2
   items-center
   justify-between
+  sticky
+  supports-[backdrop-blur]:bg-background/90
+  backdrop-blur-lg
+  top-0
+  z-50
+
 `
 
 const Brand = tw.h1`
@@ -23,6 +29,7 @@ const User = tw.div`
   flex
   flex-row
   justify-around
+  md:w-56
   w-32
 `
 

@@ -92,7 +92,7 @@ export const Navbar = () => (
 		<Menu />
 		<User>
 			<ShoppingBagIcon className='text-slate-400' />
-			<UserCircle2Icon />
+			<UserCircle2Icon className='stroke-primary' />
 		</User>
 	</Container>
 )
@@ -226,7 +226,9 @@ const ListItem = forwardRef<
 						className
 					)}
 					{...props}>
-					<div className='text-sm font-semibold leading-none'>{title}</div>
+					<div className='text-md font-extrabold tracking-wide leading-none'>
+						{title}
+					</div>
 					<p className='line-clamp-2 text-sm leading-snug text-muted-foreground'>
 						{children}
 					</p>

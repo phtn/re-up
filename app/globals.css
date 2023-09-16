@@ -9,6 +9,9 @@
   primary: #EC5A49
   secondary: #221a43
 
+	grays: #EDF1F7
+	grays: #E4E9F2
+
 */
 
 @layer base {
@@ -83,4 +86,8 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+::-webkit-scrollbar {
+	display: none;
 }

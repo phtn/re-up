@@ -27,7 +27,7 @@ const LgContainer = tw.div`
 const LgContent = tw.div`
   flex-1
   lg:px-40
-  lg:pb-56
+  lg:pb-24
   xl:grid
   xl:grid-cols-2
   transition-all
@@ -81,12 +81,19 @@ const HeroSubtext = tw.h1`
   my-12
   w-[90%]
   flex
+
+`
+const HeroOverlay = tw.div`
+  bg-[url('/images/stacked-blue.svg')]
+  bg-cover
+  bg-no-repeat
 `
 
 const Discover = tw(Button)`
   rounded-full
   transition-all
-  hover:px-10
+  hover:px-12
+  px-10
   py-4
   ease-out
   duration-500
@@ -94,8 +101,25 @@ const Discover = tw(Button)`
   xl:mb-0
 `
 
+const DarkSection = tw.div`
+  flex
+  bg-primary
+  h-full
+`
+
+const MediumGridCol = tw.div`
+  grid
+  md:grid-cols-2
+  w-full
+  h-full
+  gap-24
+
+`
+
 export {
+	DarkSection,
 	Discover,
+	HeroOverlay,
 	HeroPrimary,
 	HeroSecondary,
 	HeroSubtext,
@@ -103,4 +127,5 @@ export {
 	LgContainer,
 	LgContent,
 	Main,
+	MediumGridCol,
 }
