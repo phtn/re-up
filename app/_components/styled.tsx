@@ -62,7 +62,7 @@ const HeroSecondary = tw.div`
 `
 
 const HeroTitle = tw.h1`
-  text-[2rem]
+  text-[3rem]
   md:text-[4.5rem]
   font-thin
   text-foreground
@@ -75,7 +75,7 @@ const HeroTitle = tw.h1`
 const HeroSubtext = tw.h1`
   text-[1.15rem]
   md:text-[1rem]
-  font-medium
+  font-regular
   text-slate-500
   dark:text-slate-400
   my-12

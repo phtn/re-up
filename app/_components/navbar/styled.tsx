@@ -15,6 +15,8 @@ const Brand = tw.h1`
   text-[2rem]
   font-bold
   w-[120px]
+  justify-center
+  items-center
 `
 
 const User = tw.div`

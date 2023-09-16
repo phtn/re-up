@@ -87,7 +87,7 @@ export const Navbar = () => (
 	<Container>
 		<Brand>
 			re-up
-			<span className='font-thin text-2xl text-foreground/75'>&trade;</span>
+			<span className='font-thin text-xl text-foreground/75'>&trade;</span>
 		</Brand>
 		<Menu />
 		<User>
@@ -116,17 +116,17 @@ const Mens = () => (
 				<ListItem
 					href='/'
 					title='Outdoors'>
-					Re-usable components built using Radix UI and Tailwind CSS.
+					Explore camping essentials.
 				</ListItem>
 				<ListItem
 					href='/'
-					title='Care'>
-					How to install dependencies and structure your app.
+					title='Hygiene'>
+					From hair products to your socks.
 				</ListItem>
 				<ListItem
 					href='/'
 					title='Sports'>
-					Styles for headings, paragraphs, lists...etc
+					Explore active gears.
 				</ListItem>
 			</ul>
 		</NavigationMenuContent>
@@ -151,18 +151,18 @@ const Womens = () => (
 				</li>
 				<ListItem
 					href='/'
-					title='Bags'>
-					Re-usable components built using Radix UI and Tailwind CSS.
+					title='In a bag'>
+					Things you didn't know you need.
 				</ListItem>
 				<ListItem
 					href='/'
-					title='Care'>
-					How to install dependencies and structure your app.
+					title='Intimate Care'>
+					All personal care from face to nails.
 				</ListItem>
 				<ListItem
 					href='/'
 					title='Wellness'>
-					Styles for headings, paragraphs, lists...etc
+					Get the right elements for your body.
 				</ListItem>
 			</ul>
 		</NavigationMenuContent>
