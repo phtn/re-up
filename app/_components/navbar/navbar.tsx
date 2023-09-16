@@ -108,7 +108,9 @@ const Mens = () => (
 							<a
 								className='flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none focus:shadow-md'
 								href='/'>
-								<div className='mb-2 mt-4 text-lg font-medium'>Men</div>
+								<div className='mb-2 mt-4 mr-3 text-xs font-bold text-primary-foreground'>
+									NEW
+								</div>
 							</a>
 						</MensCover>
 					</NavigationMenuLink>
@@ -144,7 +146,9 @@ const Womens = () => (
 							<a
 								className='flex h-full w-full select-none flex-col justify-end rounded-md p-6 no-underline outline-none focus:shadow-md'
 								href='/'>
-								<div className='mb-2 mt-4 text-lg font-medium'>New</div>
+								<div className='mb-2 mt-4 mr-3 text-xs font-bold text-primary-foreground'>
+									NEW
+								</div>
 							</a>
 						</WomensCover>
 					</NavigationMenuLink>
