@@ -26,7 +26,7 @@ bg-slate-300
   justify-center
   items-center
   w-[650px]
-
+  
 `
 
 export { Container, Details, Row }

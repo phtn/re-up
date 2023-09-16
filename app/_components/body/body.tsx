@@ -11,7 +11,7 @@ import {
 	LgContent,
 	MediumGridCol,
 } from '../styled'
-import { SearchIcon } from 'lucide-react'
+import { ArrowRightIcon, SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import Panel from '../panel'
 import UpItem from '../upitem'
@@ -35,8 +35,8 @@ const Hero = () => (
 				redefine the way you pack for travel.
 			</HeroSubtext>
 			<Discover size={'lg'}>
-				<span>Explore</span>
-				<SearchIcon
+				<span>Buy Now</span>
+				<ArrowRightIcon
 					width={24}
 					height={24}
 					className='ml-3 h-4 w-auto'
