@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import Navbar from './_components/navbar'
 import { ThemeProvider } from './_components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = localFont({
 	src: [
@@ -53,6 +54,7 @@ export default function RootLayout({
 					enableSystem>
 					<Navbar />
 					{children}
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>

@@ -25,7 +25,7 @@ const Brand = tw.h1`
   items-center
 `
 
-const User = tw.div`
+const UserTrigger = tw.div`
   flex
   flex-row
   justify-around
@@ -62,4 +62,4 @@ const WomensCover = tw.div`
   bg-no-repeat
 `
 
-export { Brand, Container, Menubar, MensCover, User, WomensCover }
+export { Brand, Container, Menubar, MensCover, UserTrigger, WomensCover }

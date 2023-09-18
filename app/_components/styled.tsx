@@ -1,10 +1,28 @@
 import { Button } from '@/components/ui/button'
 import tw from 'tailwind-styled-components'
 
-const Main = tw.div`
-  w-full
+const Action = tw(Button)`
+  rounded-full
+  transition-all
+  hover:px-12
+  px-10
+  py-4
+  ease-out
+  duration-500
+  mb-12
+  xl:mb-0
+`
+
+const DarkSection = tw.div`
+  flex
+  bg-primary
   h-full
-  overflow-hidden
+`
+
+const HeroOverlay = tw.div`
+  bg-[url('/images/stacked-blue.svg')]
+  bg-cover
+  bg-no-repeat
 `
 
 const LgContainer = tw.div`
@@ -24,87 +42,10 @@ const LgContainer = tw.div`
   duration-1000
 `
 
-const LgContent = tw.div`
-  flex-1
-  lg:px-40
-  lg:pb-24
-  xl:grid
-  xl:grid-cols-2
-  transition-all
-  duration-1000
-  lg:hover:px-[10.85%]
-`
-
-const HeroPrimary = tw.div`
-  xl:flex
-  h-full
+const Main = tw.div`
   w-full
-  px-6
-  xl:px-20
-  lg:px-10
-  flex-col
-  justify-center
-  items-center
-  xl:items-start
-`
-
-const HeroSecondary = tw.div`
-  h-fit
-  items-center
-  justify-center
-  md:rounded-xl
-  overflow-hidden
-  transition-all
-  xl:scale-95
-  hover:scale-100
-  transform-gpu
-  duration-1000
-`
-
-const HeroTitle = tw.h1`
-  text-[3rem]
-  md:text-[4.5rem]
-  font-thin
-  text-foreground
-  dark:text-secondary-foreground
-  leading-tight
-  min-w-[90%]
-  self-center
-`
-
-const HeroSubtext = tw.h1`
-  text-[1.15rem]
-  md:text-[1rem]
-  font-regular
-  text-slate-500
-  dark:text-slate-400
-  my-12
-  w-[90%]
-  flex
-
-`
-const HeroOverlay = tw.div`
-  bg-[url('/images/stacked-blue.svg')]
-  bg-cover
-  bg-no-repeat
-`
-
-const Discover = tw(Button)`
-  rounded-full
-  transition-all
-  hover:px-12
-  px-10
-  py-4
-  ease-out
-  duration-500
-  mb-12
-  xl:mb-0
-`
-
-const DarkSection = tw.div`
-  flex
-  bg-primary
   h-full
+  overflow-hidden
 `
 
 const MediumGridCol = tw.div`
@@ -113,19 +54,20 @@ const MediumGridCol = tw.div`
   w-full
   h-full
   gap-24
+`
 
+const UserOverlay = tw.div`
+  bg-[url('/images/h-splash.svg')]
+  bg-cover
+  bg-no-repeat
 `
 
 export {
 	DarkSection,
-	Discover,
+	Action,
 	HeroOverlay,
-	HeroPrimary,
-	HeroSecondary,
-	HeroSubtext,
-	HeroTitle,
 	LgContainer,
-	LgContent,
 	Main,
 	MediumGridCol,
+	UserOverlay,
 }
