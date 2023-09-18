@@ -66,24 +66,26 @@ const LoginContent = tw.div`
 const LoginHeader = tw.div`
   flex
   flex-row
-  m-6
   self-start 
   justify-around
   items-center
 `
 
+const PanelContainer = tw.div`
+  flex-1
+  my-10
+`
+
 const PanelItem = tw.div`
   h-16
   px-4
-  mt-6
   w-full
   flex
   flex-row
   items-center
   justify-between
-  backdrop-blur-md
-  bg-background/50
-  rounded-lg
+  border-b-[0.33px]
+  border-slate-400/15
 `
 
 const PanelDetails = tw.div`
@@ -115,8 +117,7 @@ const UserHeader = tw.div`
   from-background 
   to-slate-100/5
   items-center 
-  p-12
-  border-[0.42px]
+  p-6
 `
 const UserProfile = tw.div`
   flex
@@ -133,6 +134,7 @@ export {
 	FooterHeader,
 	LoginContent,
 	LoginHeader,
+	PanelContainer,
 	PanelDetails,
 	PanelItem,
 	SubscriptionCard,

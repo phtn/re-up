@@ -29,8 +29,6 @@ const UserTrigger = tw.div`
   flex
   flex-row
   justify-around
-  md:w-56
-  w-32
 `
 
 const MensCover = tw.div`

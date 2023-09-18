@@ -29,6 +29,7 @@ import {
 	SubscriptionCard,
 	PanelItem,
 	PanelDetails,
+	PanelContainer,
 } from './styled'
 import { useAtom } from 'jotai'
 import { AuthContext } from '@/context/authContext'
@@ -78,28 +79,30 @@ const Authenticated = () => {
 				</span>
 			</SubscriptionCard>
 
-			<PanelItem>
-				<PanelDetails>
-					<ShoppingBagIcon className='text-primary mr-4' />
-					<span className='text-lg text-foreground font-semibold tracking-wide'>
-						Cart
+			<PanelContainer>
+				<PanelItem>
+					<PanelDetails>
+						<ShoppingBagIcon className='text-primary mr-4' />
+						<span className='text-lg text-foreground font-semibold tracking-wide'>
+							Cart
+						</span>
+					</PanelDetails>
+					<span className='text-lg text-primary font-semibold tracking-wide'>
+						0
 					</span>
-				</PanelDetails>
-				<span className='text-lg text-primary font-semibold tracking-wide'>
-					0
-				</span>
-			</PanelItem>
-			<PanelItem>
-				<PanelDetails>
-					<ReceiptIcon className='text-primary mr-4' />
-					<span className='text-lg text-foreground font-semibold tracking-wide'>
-						Transactions
+				</PanelItem>
+				<PanelItem>
+					<PanelDetails>
+						<ReceiptIcon className='text-primary mr-4' />
+						<span className='text-lg text-foreground font-semibold tracking-wide'>
+							Transactions
+						</span>
+					</PanelDetails>
+					<span className='text-lg text-primary font-semibold tracking-wide'>
+						0
 					</span>
-				</PanelDetails>
-				<span className='text-lg text-primary font-semibold tracking-wide'>
-					0
-				</span>
-			</PanelItem>
+				</PanelItem>
+			</PanelContainer>
 		</UserContentBody>
 	)
 }
@@ -109,15 +112,7 @@ const Login = () => {
 	return (
 		<UserContentBody>
 			<ContentHeader>
-				<LoginHeader>
-					<UserCircle2Icon
-						className='text-secondary-foreground text-sm'
-						height={16}
-					/>
-					<span className='mx-3 font-regular text-sm tracking-wide text-secondary-foreground'>
-						Login to your account
-					</span>
-				</LoginHeader>
+				<LoginHeader></LoginHeader>
 
 				<LoginContent>
 					<Button
@@ -154,6 +149,7 @@ const Login = () => {
 					</Button>
 				</LoginContent>
 			</ContentHeader>
+			<span>yo</span>
 		</UserContentBody>
 	)
 }

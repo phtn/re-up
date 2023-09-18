@@ -230,7 +230,7 @@ export const Checkout = (props: CheckoutProps) => {
 									</span>
 								</h1>
 
-								<p className='text-2xl font-semibold text-primary'>
+								<p className='text-2xl font-semibold text-secondary-foreground'>
 									₱ {unitPrice}
 								</p>
 								<p className='text-base text-foreground'>

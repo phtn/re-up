@@ -10,14 +10,19 @@ type ImageProps = {
 
 // *  CONTAINERS  * //
 const Container = tw.div`
+  invisible
+  animate-out
   flex-1
-  lg:px-40
+  xl:px-40
+  lg:px-24
   lg:pb-24
-  xl:grid
-  xl:grid-cols-2
+  lg:grid
+  lg:grid-cols-2
   transition-all
   duration-1000
-  lg:hover:px-[10.85%]
+  xl:hover:px-[10.85%]
+  lg:hover:px-[7.85%]
+  lg:visible
 `
 
 const Img = tw(Image)`
@@ -40,22 +45,22 @@ const Primary = tw.div`
 `
 
 const Secondary = tw.div`
-  h-fit
+  xl:h-fit
+  lg:h-96
   items-center
   justify-center
   md:rounded-xl
   overflow-hidden
   transition-all
   xl:scale-95
-  hover:scale-100
   transform-gpu
   duration-1000
 `
 
 // *  CONTENT * //
 const Title = tw.h1`
-  text-[3rem]
-  md:text-[3.5rem]
+  text-[2rem]
+  lg:text-[3rem]
   font-thin
   text-foreground
   dark:text-secondary-foreground
