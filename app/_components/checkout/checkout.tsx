@@ -233,7 +233,7 @@ export const Checkout = (props: CheckoutProps) => {
 								<p className='text-2xl font-semibold text-zinc-900 dark:text-zinc-50'>
 									₱ {unitPrice}
 								</p>
-								<p className='text-base text-foreground dark:text-zinc-400'>
+								<p className='text-base text-foreground'>
 									{productDescription}
 								</p>
 								<div className='flex space-x-8'>
@@ -253,7 +253,7 @@ export const Checkout = (props: CheckoutProps) => {
 								</div>
 								<Button
 									onClick={handlePayment}
-									className='w-full h-14 rounded-md bg-zinc-900 text-zinc-50 shadow-sm dark:bg-zinc-50 dark:text-zinc-900 hover:bg-[#191818]'>
+									className='w-full h-14 rounded-md bg-zinc-900 text-zinc-50 shadow-sm hover:bg-[#191818]'>
 									Checkout
 									<CheckoutOptions />
 								</Button>
