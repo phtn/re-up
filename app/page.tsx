@@ -22,8 +22,9 @@ export default function Home() {
 					.catch((err) => console.log(err))
 			} else setUserData(user)
 		})
-	}, [userData])
+	}, [])
 
+	console.log('Main')
 	return (
 		<Main>
 			<Body />
