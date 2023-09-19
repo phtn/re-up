@@ -109,6 +109,12 @@ function prettyDate(date: Date): string {
 	return `${month.substring(0, 3)} ${dayOfMonth}, ${year} ${time}`
 }
 
+function sanitize(obj: Record<any, any>) {
+	return Object.fromEntries(
+		Object.entries(obj).filter(([_, value]) => value !== undefined)
+	)
+}
+
 function toggle(setState: Dispatch<SetStateAction<boolean>>): void {
 	setState((prevState) => !prevState)
 }
@@ -125,6 +131,7 @@ export {
 	limitText,
 	map,
 	prettyDate,
+	sanitize,
 	toggle,
 }
 
