@@ -24,7 +24,6 @@ rounded-xl
 const FooterContainer = tw.div`
   flex
   flex-row
-  // items-center
   justify-evenly
   h-44
   w-full
@@ -111,11 +110,8 @@ const UserDetailsContent = tw.div`
 `
 
 const UserHeader = tw.div`
-  bg-gradient-to-tr 
   flex
   flex-row
-  from-background 
-  to-primary/25
   items-center 
   p-6
 `

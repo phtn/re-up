@@ -1,10 +1,11 @@
-import { CheckoutSessionProps } from '@/app/_components/checkout/types'
+import { CheckoutPayload } from '@/app/_components/checkout/types'
 import { toast } from '@/components/ui/use-toast'
 import { filterPayload } from '@/lib/utils'
 import axios from 'axios'
+import { useMemo } from 'react'
 
 const URL = process.env.NEXT_PUBLIC_PAYMONGO_CS_URL
-const TK = process.env.NEXT_PUBLIC_PAYMONGO_TK
+const TK = process.env.NEXT_PUBLIC_PAYMONGO_SK_TEST_RE_UP
 
 const HEADERS = {
 	accept: 'application/json',
@@ -24,9 +25,9 @@ const payment_method_types = [
 const send_email_receipt = false
 const show_description = true
 const show_line_items = true
-const description = 'Comptrolla Services'
+const description = 're-up.ph products'
 
-export const initPayment = async (props: any) => {
+export const createCheckoutSession = async (props: CheckoutPayload) => {
 	const { billing, line_items } = props
 	const cleanBilling = filterPayload(billing)
 	const data = {
@@ -51,10 +52,10 @@ export const initPayment = async (props: any) => {
 		data,
 	}
 
-	return axios
+	const response = await axios
 		.request(options)
-		.then((response) => {
-			const status = response.data
+		.then((result) => {
+			const status = result.data
 			const checkout_url = status.data.attributes.checkout_url
 			const session_id = status.data.id
 			return { checkout_url, session_id }
@@ -65,4 +66,6 @@ export const initPayment = async (props: any) => {
 				description: '',
 			})
 		)
+
+	return response
 }

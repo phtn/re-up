@@ -22,7 +22,7 @@ import Link from 'next/link'
 import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 import '@/components/ui/styles.css'
-import User from '../ user'
+import User from '../user'
 
 const Menu = () => (
 	<Menubar>

@@ -1,9 +1,11 @@
 import tw from 'tailwind-styled-components'
 
 const CheckoutItem = tw.div`
-  md:px-56
+  sm:px-8
+  md:px-16
+  lg:px-44
 `
-const CheckoutHeader = tw.div`
+const Header = tw.div`
   items-center
   px-64
   py-8
@@ -12,7 +14,6 @@ const CheckoutHeader = tw.div`
   flex-row
   justify-between
   w-0
-  border-b
   md:w-full
 `
-export { CheckoutItem, CheckoutHeader }
+export { CheckoutItem, Header }

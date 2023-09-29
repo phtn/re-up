@@ -7,7 +7,7 @@ import { HeroProps } from '../hero/hero'
 import Checkout from '../checkout'
 import Sticker from '../sticker'
 import { FlashSticker } from '../sticker/sticker'
-import { CheckoutProps } from '../checkout/types'
+import { CheckoutProductProps } from '../checkout/types'
 
 /*
 
@@ -16,7 +16,7 @@ import { CheckoutProps } from '../checkout/types'
 
 */
 
-const product: CheckoutProps = {
+const product: CheckoutProductProps = {
 	productDescription:
 		'Botanical Extract with Orange Peel Body Soap - Helps speed up cell renewal.',
 	productImage: '/images/soap-one.png',

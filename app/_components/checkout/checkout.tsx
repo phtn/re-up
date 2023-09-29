@@ -1,3 +1,4 @@
+'use client'
 import { Button } from '@/components/ui/button'
 import {
 	Sheet,
@@ -21,14 +22,16 @@ import {
 	UserCircle2Icon,
 } from 'lucide-react'
 import { Action } from '../styled'
-import { CheckoutHeader, CheckoutItem } from './styled'
+import { Header, CheckoutItem } from './styled'
 import Image from 'next/image'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	BillingProps,
-	CheckoutProps,
+	ProductDetailProps,
 	CheckoutSessionProps,
 	LineItemProps,
+	CheckoutHeaderProps,
+	CheckoutProductProps,
 } from './types'
 import { decimal, map } from '@/lib/utils'
 import { useToast } from '@/components/ui/use-toast'
@@ -36,9 +39,10 @@ import { ToastAction } from '@/components/ui/toast'
 import { signIn } from '@/api/signIn'
 import { useAtom } from 'jotai'
 import { AuthContext } from '@/context/authContext'
-import { initPayment } from '@/api/checkout'
+import { createCheckoutSession } from '@/api/checkout'
+import { redirect } from 'next/navigation'
 
-export const Checkout = (props: CheckoutProps) => {
+export const Checkout = (props: CheckoutProductProps) => {
 	const {
 		productDescription,
 		productImage,
@@ -48,33 +52,27 @@ export const Checkout = (props: CheckoutProps) => {
 	} = props
 
 	const [user, _] = useAtom(AuthContext)
-	const [count, setCount] = useState(1)
+	const [itemCount, setItemCount] = useState(1)
 	const [isLoading, setIsLoading] = useState(false)
 	const [paymongoResponse, setPaymongoResponse] =
-		useState<CheckoutSessionProps>({} as CheckoutSessionProps)
+		useState<CheckoutSessionProps | null>(null)
 
-	const handleIncrement = () => setCount((prev) => prev + 1)
+	const handleIncrement = () => setItemCount((prev) => prev + 1)
 	const handleDecrement = () =>
-		setCount((prev) => {
-			if (prev === 1) {
-				return 1
-			} else {
-				return prev - 1
-			}
-		})
+		setItemCount((prev) => (prev === 1 ? 1 : prev - 1))
 
-	const unitPrice = decimal(productPrice, 2)
-	const total = useMemo(() => productPrice * count, [count])
-	const totalPrice = decimal(total, 2)
+	const productUnitPrice = decimal(productPrice, 2)
+	const totalPrice = useMemo(() => productPrice * itemCount, [itemCount])
+	const totalDisplayPrice = decimal(totalPrice, 2)
 
 	const name = user?.displayName
 	const email = user?.email
 	const phone = ''
 
 	const basePoint = 120
-	const unitPoints = basePoint * count
+	const unitPoints = basePoint * itemCount
 
-	const cart = `${count} item${count > 1 ? 's' : ''}`
+	const cart = `${itemCount} item${itemCount > 1 ? 's' : ''}`
 
 	const { toast } = useToast()
 
@@ -87,15 +85,15 @@ export const Checkout = (props: CheckoutProps) => {
 			})
 		)
 
+	const inCents = productPrice * 1.12 * 100 * itemCount
+	const totalAmount = Math.floor(inCents)
 	const processCartItems = useCallback(() => {
-		const inCents = total * 1.12 * 100
-		const totalAmount = Math.floor(inCents)
 		const line_items: LineItemProps[] = [
 			{
 				currency: 'PHP',
-				amount: totalAmount,
+				amount: Math.floor(productPrice * 1.12 * 100),
 				name: productName,
-				quantity: count,
+				quantity: itemCount,
 				description: 'desc',
 			},
 		]
@@ -115,58 +113,68 @@ export const Checkout = (props: CheckoutProps) => {
 		}
 
 		return { billing, line_items }
-	}, [total, count, name, phone, email, user, productDescription])
+	}, [totalAmount, itemCount])
 
 	// *	PAYMENT	*	//
 
-	const handlePayment = useCallback(async () => {
+	const handleOnPressCheckout = async () => {
 		setIsLoading(true)
-		const initProps = processCartItems()
+		const payload = processCartItems()
 
-		await initPayment(initProps)
-			.then((res) => {
-				return setPaymongoResponse(res as CheckoutSessionProps)
-			})
-			.catch((err) => console.log(err))
-			.finally(() => {
-				if (paymongoResponse.session_id !== undefined) {
-					setIsLoading(false)
-					return toast({
-						title: `Paymongo: ${paymongoResponse.session_id}`,
-						description: paymongoResponse.checkout_url,
-					})
-				}
-			})
-	}, [paymongoResponse.checkout_url, paymongoResponse.session_id, isLoading])
-
-	const handleOnCheckout = () => {
-		if (user) {
-			setIsLoading(true)
-			console.log('Proceed to payment')
-			handlePayment()
-		} else {
-			return toast({
-				title: 'Login to proceed.',
-				description:
-					'This ensures that we can send your e-receipt to your email.',
-				action: (
-					<ToastAction
-						onClick={handleSignIn}
-						altText='Continue with Google'>
-						<span className='text-secondary-foreground'>Sign in</span>
-					</ToastAction>
-				),
-			})
+		try {
+			const response = await createCheckoutSession(payload)
+			setPaymongoResponse(response as CheckoutSessionProps)
+		} catch (err) {
+			console.log(err)
 		}
 	}
 
-	const CheckoutOptions = useCallback(() => {
-		const options = map(
-			<RotateCwIcon className='text-gradient text-primary mx-6 animate-spin' />,
-			<MoveRightIcon className='text-primary mx-6' />
-		)
-		return <>{options.get(isLoading)}</>
-	}, [isLoading])
+	useEffect(() => {
+		console.log(itemCount, totalAmount)
+	}, [itemCount, totalAmount])
+
+	useEffect(() => {
+		if (paymongoResponse?.checkout_url) {
+			redirect(paymongoResponse.checkout_url)
+		}
+	})
+
+	// const handleOnPressCheckout = () => handlePayment()
+
+	// const handleOnPressCheckout = () => {
+	// 	if (user) {
+	// 		setIsLoading(true)
+	// 		console.log('Proceed to payment')
+	// 		handlePayment()
+	// 	} else {
+	// 		return toast({
+	// 			title: 'Login to proceed.',
+	// 			description:
+	// 				'This ensures that we can send your e-receipt to your email.',
+	// 			action: (
+	// 				<ToastAction
+	// 					onClick={handleSignIn}
+	// 					altText='Continue with Google'>
+	// 					<span className='text-secondary-foreground'>Sign in</span>
+	// 				</ToastAction>
+	// 			),
+	// 		})
+	// 	}
+	// }
+
+	const productDetailProps = useMemo(() => {
+		return {
+			handleDecrement,
+			handleIncrement,
+			handleOnPressCheckout,
+			isLoading,
+			itemCount,
+			productDescription,
+			productInfo,
+			productName,
+			productUnitPrice,
+		}
+	}, [isLoading, itemCount])
 
 	return (
 		<Sheet>
@@ -181,90 +189,124 @@ export const Checkout = (props: CheckoutProps) => {
 				</Action>
 			</SheetTrigger>
 			<SheetContent side='bottom'>
-				<SheetHeader>
-					<CheckoutHeader>
-						<div className='flex flex-row w-[16rem] items-center justify-between'>
-							<span className='text-primary font-medium py-1'>Total</span>
-							<ChevronRight
-								className='text-zinc-500'
-								height={16}
-								width={16}
-							/>
-							<span className='fade-in-10 animate-in md:text-3xl'>
-								₱ {totalPrice}
-							</span>
-						</div>
-
-						<div className='flex flex-row items-center justify-between w-36'>
-							<ShoppingBag className='text-primary' />
-							<ChevronRight
-								className='text-zinc-500'
-								height={16}
-								width={16}
-							/>
-							<p className='text-foreground font-medium'>{cart}</p>
-						</div>
-						<div></div>
-						<div></div>
-
-						<p className='text-primary-foreground px-3 py-1 bg-primary'>
-							+ {unitPoints} pts
-						</p>
-					</CheckoutHeader>
-				</SheetHeader>
+				<CheckoutHeader
+					cart={cart}
+					totalDisplayPrice={totalDisplayPrice}
+					unitPoints={unitPoints}
+				/>
 				<CheckoutItem>
 					<section className='w-full pb-12 md:pb-24 lg:pb-32'>
-						<div className='container flex items-start gap-16 px-4 md:px-6'>
+						<div className='container flex items-start justify-center gap-16 px-4 md:px-6'>
 							<Image
 								alt='Soap'
 								className='aspect-[1/1] object-cover object-center transition-transform transform-gpu duration-1000 scale-95 animate-in'
-								height={500}
+								height={300}
 								src={productImage}
-								width={500}
+								width={300}
 							/>
-							<div className='space-y-10'>
-								<h1 className='text-4xl font-bold tracking-tighter'>
-									{productName}
-									<span className='font-light text-3xl mx-4 mb-1 tracking-normal'>
-										Face & Body
-									</span>
-								</h1>
-
-								<p className='text-2xl font-semibold text-secondary-foreground'>
-									₱ {unitPrice}
-								</p>
-								<p className='text-base text-foreground'>
-									{productDescription}
-								</p>
-								<div className='flex space-x-8'>
-									<Button
-										onClick={handleDecrement}
-										className='w-12 h-12 rounded-full border-[0.44px] border-primary text-zinc-900 text-lg font-bold bg-gradient-to-br from-primary-foreground to-primary'>
-										<Minus />
-									</Button>
-									<div className='flex items-center justify-center w-12 h-12 rounded-lg text-foreground text-xl backdrop-blur-md bg-primary-foreground/25 font-medium'>
-										{count}
-									</div>
-									<Button
-										onClick={handleIncrement}
-										className='w-12 h-12 rounded-full border-[0.44px] border-primary text-zinc-900 text-lg font-bold bg-gradient-to-br from-primary-foreground to-primary'>
-										<Plus />
-									</Button>
-								</div>
-								<Button
-									onClick={handlePayment}
-									className='w-full h-14 rounded-md bg-zinc-900 text-zinc-50 shadow-sm hover:bg-[#191818]'>
-									Checkout
-									<CheckoutOptions />
-								</Button>
-								<p className='text-xs text-foreground dark:text-zinc-400'>
-									{productInfo}
-								</p>
-							</div>
+							<ProductDetails {...productDetailProps} />
 						</div>
 					</section>
 				</CheckoutItem>
 			</SheetContent>
 		</Sheet>
+	)
+}
+
+const CheckoutHeader = (props: CheckoutHeaderProps) => {
+	const { cart, totalDisplayPrice, unitPoints } = props
+	return (
+		<SheetHeader>
+			<Header>
+				<div className='flex flex-row w-[16rem] items-center justify-between'>
+					<span className='text-primary font-medium py-1'>Total</span>
+					<ChevronRight
+						className='text-zinc-500'
+						height={16}
+						width={16}
+					/>
+					<span className='fade-in-10 animate-in md:text-3xl'>
+						₱ {totalDisplayPrice}
+					</span>
+				</div>
+
+				<div className='flex flex-row items-center justify-between w-36'>
+					<ShoppingBag className='text-primary' />
+					<ChevronRight
+						className='text-zinc-500'
+						height={16}
+						width={16}
+					/>
+					<p className='text-foreground font-medium'>{cart}</p>
+				</div>
+				<div></div>
+				<div></div>
+
+				<p className='text-primary-foreground px-3 py-1 bg-primary'>
+					+ {unitPoints} pts
+				</p>
+			</Header>
+		</SheetHeader>
+	)
+}
+
+const ProductDetails = (props: ProductDetailProps) => {
+	const {
+		productDescription,
+		productInfo,
+		productName,
+		productUnitPrice,
+		isLoading,
+		itemCount,
+		handleDecrement,
+		handleIncrement,
+		handleOnPressCheckout,
+	} = props
+
+	const CheckoutOptions = useCallback(() => {
+		const options = map(
+			<RotateCwIcon className='text-gradient text-primary mx-6 animate-spin' />,
+			<MoveRightIcon className='text-primary mx-6' />
+		)
+		return <>{options.get(isLoading)}</>
+	}, [isLoading])
+	return (
+		<div className='space-y-10'>
+			<h1 className='text-4xl font-bold tracking-tighter'>
+				{productName}
+				<span className='font-light text-3xl mx-4 mb-1 tracking-normal'>
+					Face & Body
+				</span>
+			</h1>
+
+			<p className='text-2xl font-semibold text-secondary-foreground'>
+				₱ {productUnitPrice}
+			</p>
+			<p className='text-base text-foreground'>{productDescription}</p>
+			<div className='flex space-x-8'>
+				<Button
+					onClick={handleDecrement}
+					className='w-12 h-12 rounded-full border-[0.44px] border-primary text-zinc-900 text-lg font-bold bg-gradient-to-br from-primary-foreground to-primary'>
+					<Minus />
+				</Button>
+				<div className='flex items-center justify-center w-12 h-12 rounded-lg text-foreground text-xl backdrop-blur-md bg-primary-foreground/25 font-medium'>
+					{itemCount}
+				</div>
+				<Button
+					onClick={handleIncrement}
+					className='w-12 h-12 rounded-full border-[0.44px] border-primary text-zinc-900 text-lg font-bold bg-gradient-to-br from-primary-foreground to-primary'>
+					<Plus />
+				</Button>
+			</div>
+			<Button
+				onClick={() => handleOnPressCheckout()}
+				className='w-full h-14 rounded-md bg-zinc-900 text-zinc-50 shadow-sm hover:bg-[#191818]'>
+				Checkout
+				<CheckoutOptions />
+			</Button>
+			<p className='text-xs text-foreground dark:text-zinc-400'>
+				{productInfo}
+			</p>
+		</div>
 	)
 }

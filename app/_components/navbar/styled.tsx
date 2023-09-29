@@ -9,7 +9,6 @@ const Container = tw.div`
   items-center
   justify-between
   sticky
-  supports-[backdrop-blur]:bg-background/90
   backdrop-blur-lg
   top-0
   z-50

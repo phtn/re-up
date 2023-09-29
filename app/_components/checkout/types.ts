@@ -1,9 +1,27 @@
-type CheckoutProps = {
+type CheckoutProductProps = {
 	productName: string
 	productPrice: number
 	productDescription: string
 	productInfo: string
 	productImage: string
+}
+
+type CheckoutHeaderProps = {
+	cart: string
+	totalDisplayPrice: string
+	unitPoints: number
+}
+
+type ProductDetailProps = {
+	handleDecrement: () => void
+	handleIncrement: () => void
+	handleOnPressCheckout: () => void
+	isLoading: boolean
+	itemCount: number
+	productDescription: string
+	productInfo: string
+	productName: string
+	productUnitPrice: string
 }
 
 type AddressProps = {
@@ -22,6 +40,11 @@ type BillingProps = {
 	address: AddressProps
 }
 
+type CheckoutPayload = {
+	billing: BillingProps
+	line_items: LineItemProps[]
+}
+
 type LineItemProps = {
 	currency: string
 	amount: number
@@ -35,4 +58,12 @@ type CheckoutSessionProps = {
 	session_id: string
 }
 
-export type { BillingProps, CheckoutProps, CheckoutSessionProps, LineItemProps }
+export type {
+	BillingProps,
+	CheckoutHeaderProps,
+	CheckoutProductProps,
+	ProductDetailProps,
+	CheckoutSessionProps,
+	CheckoutPayload,
+	LineItemProps,
+}

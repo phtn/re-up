@@ -1,4 +1,4 @@
-import { UserData } from '@/context/types'
+import { UserData } from '@/app/_context/types'
 import { db } from '@/lib/db'
 import { doc, getDoc } from 'firebase/firestore'
 
