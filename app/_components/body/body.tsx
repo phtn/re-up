@@ -57,7 +57,7 @@ const MidSection = () => (
 	</BigPanel>
 )
 
-export const Body = () => (
+const Body = () => (
 	<LgContainer>
 		<Hero {...heroProps} />
 		<HeroOverlay>
@@ -67,3 +67,4 @@ export const Body = () => (
 		</HeroOverlay>
 	</LgContainer>
 )
+export default Body

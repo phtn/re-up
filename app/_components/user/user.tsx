@@ -3,22 +3,15 @@ import { getAuth, signOut } from 'firebase/auth'
 import {
 	Sheet,
 	SheetContent,
-	SheetDescription,
 	SheetFooter,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet'
-import {
-	LogInIcon,
-	ReceiptIcon,
-	ShoppingBagIcon,
-	UserCircle2Icon,
-} from 'lucide-react'
+import { ReceiptIcon, ShoppingBagIcon, UserCircle2Icon } from 'lucide-react'
 import {
 	UserContentBody,
 	ContentHeader,
-	Title,
 	UserContent,
 	UserHeader,
 	FooterContainer,
@@ -31,16 +24,13 @@ import {
 	PanelDetails,
 	PanelContainer,
 } from './styled'
-import { useAtom, useStore } from 'jotai'
+import { useAtom } from 'jotai'
 import { generateGreeting, getFirstWord, getInitials, map } from '@/lib/utils'
 import { useCallback, useMemo } from 'react'
 import { signIn } from '@/api/signIn'
 import { firebaseApp } from '@/lib/db'
 import { UserDetailProps } from './types'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import Snack from '../snack'
-// import { globalAuth } from '@/app/page'
-import { UserData } from '@/app/_context/types'
 import { userDataAtom } from '@/app/_context/authContext'
 
 const auth = getAuth(firebaseApp)
@@ -190,7 +180,7 @@ export const User = () => {
 			// email: '',
 			// photoURL: '',
 		}
-	}, [])
+	}, [user?.displayName, user?.email, user?.photoURL])
 
 	const Header = useCallback(() => {
 		const options = map(
@@ -202,7 +192,7 @@ export const User = () => {
 				<UserHeader>{options.get(isAuthenticated)}</UserHeader>{' '}
 			</SheetHeader>
 		)
-	}, [isAuthenticated])
+	}, [isAuthenticated, greeting, userProps])
 
 	const Content = useCallback(() => {
 		const options = map(<Authenticated />, <Login />)

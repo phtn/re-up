@@ -38,7 +38,6 @@ import { useToast } from '@/components/ui/use-toast'
 import { ToastAction } from '@/components/ui/toast'
 import { signIn } from '@/api/signIn'
 import { useAtom } from 'jotai'
-import { AuthContext } from '@/context/authContext'
 import { createCheckoutSession } from '@/api/checkout'
 import { redirect } from 'next/navigation'
 
@@ -51,23 +50,17 @@ export const Checkout = (props: CheckoutProductProps) => {
 		productPrice,
 	} = props
 
-	const [user, _] = useAtom(AuthContext)
 	const [itemCount, setItemCount] = useState(1)
 	const [isLoading, setIsLoading] = useState(false)
 	const [paymongoResponse, setPaymongoResponse] =
 		useState<CheckoutSessionProps | null>(null)
 
-	const handleIncrement = () => setItemCount((prev) => prev + 1)
-	const handleDecrement = () =>
-		setItemCount((prev) => (prev === 1 ? 1 : prev - 1))
-
 	const productUnitPrice = decimal(productPrice, 2)
-	const totalPrice = useMemo(() => productPrice * itemCount, [itemCount])
+	const totalPrice = useMemo(
+		() => productPrice * itemCount,
+		[itemCount, productPrice]
+	)
 	const totalDisplayPrice = decimal(totalPrice, 2)
-
-	const name = user?.displayName
-	const email = user?.email
-	const phone = ''
 
 	const basePoint = 120
 	const unitPoints = basePoint * itemCount
@@ -87,6 +80,7 @@ export const Checkout = (props: CheckoutProductProps) => {
 
 	const inCents = productPrice * 1.12 * 100 * itemCount
 	const totalAmount = Math.floor(inCents)
+
 	const processCartItems = useCallback(() => {
 		const line_items: LineItemProps[] = [
 			{
@@ -113,21 +107,9 @@ export const Checkout = (props: CheckoutProductProps) => {
 		}
 
 		return { billing, line_items }
-	}, [totalAmount, itemCount])
+	}, [itemCount, productPrice, productName])
 
 	// *	PAYMENT	*	//
-
-	const handleOnPressCheckout = async () => {
-		setIsLoading(true)
-		const payload = processCartItems()
-
-		try {
-			const response = await createCheckoutSession(payload)
-			setPaymongoResponse(response as CheckoutSessionProps)
-		} catch (err) {
-			console.log(err)
-		}
-	}
 
 	useEffect(() => {
 		console.log(itemCount, totalAmount)
@@ -137,7 +119,7 @@ export const Checkout = (props: CheckoutProductProps) => {
 		if (paymongoResponse?.checkout_url) {
 			redirect(paymongoResponse.checkout_url)
 		}
-	})
+	}, [paymongoResponse])
 
 	// const handleOnPressCheckout = () => handlePayment()
 
@@ -163,6 +145,20 @@ export const Checkout = (props: CheckoutProductProps) => {
 	// }
 
 	const productDetailProps = useMemo(() => {
+		const handleIncrement = () => setItemCount((prev) => prev + 1)
+		const handleDecrement = () =>
+			setItemCount((prev) => (prev === 1 ? 1 : prev - 1))
+		const handleOnPressCheckout = async () => {
+			setIsLoading(true)
+			const payload = processCartItems()
+
+			try {
+				const response = await createCheckoutSession(payload)
+				setPaymongoResponse(response as CheckoutSessionProps)
+			} catch (err) {
+				console.log(err)
+			}
+		}
 		return {
 			handleDecrement,
 			handleIncrement,
@@ -174,7 +170,15 @@ export const Checkout = (props: CheckoutProductProps) => {
 			productName,
 			productUnitPrice,
 		}
-	}, [isLoading, itemCount])
+	}, [
+		isLoading,
+		itemCount,
+		productDescription,
+		productInfo,
+		productName,
+		productUnitPrice,
+		processCartItems,
+	])
 
 	return (
 		<Sheet>

@@ -1,2 +1,1 @@
-import { Body } from './body'
-export default Body
+export { default } from './body'
